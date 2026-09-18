@@ -1,0 +1,160 @@
+/* NEPG Admin — canonical Mac OS-style admin UI */
+:root {
+  --nepg-bg: #c0c0c0;
+  --nepg-white: #ffffff;
+  --nepg-black: #000000;
+  --nepg-shadow: #808080;
+  --nepg-blue: #000080;
+  --nepg-blue2: #0000aa;
+  --nepg-red: #800000;
+  --nepg-green: #006400;
+  --nepg-font: "Chicago", "Geneva", Arial, sans-serif;
+}
+
+.nepg-admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: var(--nepg-font);
+  color: var(--nepg-black);
+}
+
+.nepg-admin-window {
+  width: min(560px, 100%);
+  max-height: min(760px, calc(100vh - 32px));
+  overflow: auto;
+  box-sizing: border-box;
+  background: var(--nepg-bg);
+  border: 2px solid var(--nepg-black);
+  box-shadow: 4px 4px 0 var(--nepg-black);
+}
+
+.nepg-admin-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 3px 6px;
+  box-sizing: border-box;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--nepg-white) 0,
+    var(--nepg-white) 1px,
+    var(--nepg-black) 1px,
+    var(--nepg-black) 2px
+  );
+  color: var(--nepg-black);
+  font-weight: bold;
+  cursor: default;
+  user-select: none;
+}
+
+.nepg-admin-title {
+  flex: 1;
+  background: var(--nepg-white);
+  padding: 2px 8px;
+  text-align: center;
+}
+
+.nepg-admin-close {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 2px solid var(--nepg-black);
+  background: var(--nepg-bg);
+  font-weight: bold;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.nepg-admin-body { padding: 12px; }
+
+.nepg-admin-section {
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 2px groove var(--nepg-white);
+}
+
+.nepg-admin-section h2 {
+  margin: -4px 0 10px;
+  font-size: 15px;
+}
+
+.nepg-admin-field {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.nepg-admin-field label { font-weight: bold; }
+
+.nepg-admin-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 5px;
+  border: 2px inset var(--nepg-white);
+  background: var(--nepg-white);
+  color: var(--nepg-black);
+  font: inherit;
+}
+
+.nepg-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.nepg-admin-button {
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 2px outset var(--nepg-white);
+  background: var(--nepg-bg);
+  color: var(--nepg-black);
+  font: inherit;
+  cursor: pointer;
+}
+
+.nepg-admin-button:active {
+  border-style: inset;
+}
+
+.nepg-admin-button:disabled {
+  color: var(--nepg-shadow);
+  cursor: default;
+}
+
+.nepg-admin-status {
+  margin-top: 10px;
+  padding: 7px;
+  border: 2px inset var(--nepg-white);
+  background: var(--nepg-white);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.nepg-admin-status.success { color: var(--nepg-green); }
+.nepg-admin-status.error { color: var(--nepg-red); }
+
+.nepg-admin-note {
+  margin: 6px 0;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.nepg-admin-hidden { display: none !important; }
+
+@media (max-width: 520px) {
+  .nepg-admin-overlay { padding: 8px; }
+  .nepg-admin-window { max-height: calc(100vh - 16px); }
+  .nepg-admin-field { grid-template-columns: 1fr; gap: 3px; }
+}
