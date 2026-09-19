@@ -1,14 +1,25 @@
 /* NEPG Admin — canonical Mac OS-style admin UI */
+@font-face {
+  font-family: "ChiKareGo";
+  src: url("fonts/ChiKareGo2.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --nepg-bg: #c0c0c0;
+  --nepg-window: #d9d9d9;
+  --nepg-title: #e6e6e6;
   --nepg-white: #ffffff;
   --nepg-black: #000000;
-  --nepg-shadow: #808080;
+  --nepg-shadow: #7f7f7f;
+  --nepg-secondary: #333333;
   --nepg-blue: #000080;
   --nepg-blue2: #0000aa;
   --nepg-red: #800000;
   --nepg-green: #006400;
-  --nepg-font: "Chicago", "Geneva", Arial, sans-serif;
+  --nepg-font: "ChiKareGo", "Chicago", "Geneva", sans-serif;
 }
 
 .nepg-admin-overlay {
@@ -22,17 +33,25 @@
   box-sizing: border-box;
   background: rgba(0, 0, 0, 0.25);
   font-family: var(--nepg-font);
+  -webkit-font-smoothing: none;
+  font-size: 20px;
+  line-height: 1.25;
   color: var(--nepg-black);
 }
 
 .nepg-admin-window {
   width: min(560px, 100%);
   max-height: min(760px, calc(100vh - 32px));
-  overflow: auto;
+  overflow: hidden;
   box-sizing: border-box;
-  background: var(--nepg-bg);
+  background: var(--nepg-window);
   border: 2px solid var(--nepg-black);
-  box-shadow: 4px 4px 0 var(--nepg-black);
+  box-shadow:
+    inset 2px 2px 0 var(--nepg-white),
+    inset -2px -2px 0 var(--nepg-shadow);
+
+  display: flex;
+  flex-direction: column;
 }
 
 .nepg-admin-titlebar {
@@ -42,24 +61,41 @@
   min-height: 28px;
   padding: 3px 6px;
   box-sizing: border-box;
-  background: repeating-linear-gradient(
-    0deg,
-    var(--nepg-white) 0,
-    var(--nepg-white) 1px,
-    var(--nepg-black) 1px,
-    var(--nepg-black) 2px
-  );
+  background: var(--nepg-title);
+  border-bottom: 2px solid var(--nepg-black);
   color: var(--nepg-black);
-  font-weight: bold;
+  font-weight: normal;
   cursor: default;
   user-select: none;
+
+  flex: none;
 }
 
 .nepg-admin-title {
   flex: 1;
-  background: var(--nepg-white);
   padding: 2px 8px;
-  text-align: center;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nepg-admin-title::before,
+.nepg-admin-title::after {
+  content: "";
+
+  flex: 1;
+  height: 20px;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--nepg-black) 0,
+    var(--nepg-black) 2px,
+    transparent 2px,
+    transparent 5px
+  );
 }
 
 .nepg-admin-close {
@@ -67,23 +103,51 @@
   height: 22px;
   padding: 0;
   border: 2px solid var(--nepg-black);
-  background: var(--nepg-bg);
-  font-weight: bold;
+  background: var(--nepg-window);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-white),
+    inset -1px -1px 0 var(--nepg-shadow);
+  font-weight: normal;
   line-height: 16px;
   cursor: pointer;
 }
 
-.nepg-admin-body { padding: 12px; }
+.nepg-admin-close:active {
+  background: var(--nepg-blue);
+  color: var(--nepg-white);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-shadow),
+    inset -1px -1px 0 var(--nepg-white);
+}
+
+.nepg-admin-body {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 
 .nepg-admin-section {
   margin: 0 0 12px;
-  padding: 10px;
-  border: 2px groove var(--nepg-white);
+  padding: 8px 10px;
+  background: var(--nepg-window);
+  border: 2px solid var(--nepg-black);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-white),
+    inset -1px -1px 0 var(--nepg-shadow);
 }
 
-.nepg-admin-section h2 {
-  margin: -4px 0 10px;
-  font-size: 15px;
+.nepg-admin-section summary {
+  margin: 0;
+  padding: 4px 0;
+  font-size: 22px;
+  font-weight: normal;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.nepg-admin-section[open] summary {
+  margin-bottom: 10px;
 }
 
 .nepg-admin-field {
@@ -94,14 +158,17 @@
   margin: 8px 0;
 }
 
-.nepg-admin-field label { font-weight: bold; }
+.nepg-admin-field label { font-weight: normal; }
 
 .nepg-admin-input {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
   padding: 5px;
-  border: 2px inset var(--nepg-white);
+  border: 2px solid var(--nepg-black);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-shadow),
+    inset -1px -1px 0 var(--nepg-white);
   background: var(--nepg-white);
   color: var(--nepg-black);
   font: inherit;
@@ -117,27 +184,46 @@
 .nepg-admin-button {
   min-height: 30px;
   padding: 4px 12px;
-  border: 2px outset var(--nepg-white);
-  background: var(--nepg-bg);
+  border: 2px solid var(--nepg-black);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-white),
+    inset -1px -1px 0 var(--nepg-shadow);
+  background: var(--nepg-window);
   color: var(--nepg-black);
   font: inherit;
   cursor: pointer;
 }
 
+.nepg-admin-button:hover {
+  background: rgba(0, 0, 128, 0.15);
+}
+
 .nepg-admin-button:active {
-  border-style: inset;
+  background: var(--nepg-blue);
+  color: var(--nepg-white);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-shadow),
+    inset -1px -1px 0 var(--nepg-white);
 }
 
 .nepg-admin-button:disabled {
   color: var(--nepg-shadow);
+  background: var(--nepg-window);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-white),
+    inset -1px -1px 0 var(--nepg-shadow);
   cursor: default;
 }
 
 .nepg-admin-status {
   margin-top: 10px;
   padding: 7px;
-  border: 2px inset var(--nepg-white);
+  border: 2px solid var(--nepg-black);
+  box-shadow:
+    inset 1px 1px 0 var(--nepg-shadow),
+    inset -1px -1px 0 var(--nepg-white);
   background: var(--nepg-white);
+  color: var(--nepg-secondary);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -147,8 +233,9 @@
 
 .nepg-admin-note {
   margin: 6px 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.35;
+  color: var(--nepg-secondary);
 }
 
 .nepg-admin-hidden { display: none !important; }
