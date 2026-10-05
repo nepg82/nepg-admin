@@ -291,6 +291,14 @@
         </div>
         <div class="nepg-admin-body">
           <details class="nepg-admin-section">
+            <summary>Git Backup</summary>
+            <div class="nepg-admin-actions">
+              <button id="backup" class="nepg-admin-button">Backup to GitHub</button>
+              <button id="restore" class="nepg-admin-button">Restore from GitHub</button>
+            </div>
+            <div id="bs" class="nepg-admin-status">Ready.</div>
+          </details>
+          <details class="nepg-admin-section">
             <summary>GitHub Settings</summary>
             ${auth ? '<div class="nepg-admin-note">Sign in to continue. Enter a token with Contents: read &amp; write on this repo.</div>' : ""}
             <div class="nepg-admin-field"><label>Owner</label><input id="o" class="nepg-admin-input"></div>
@@ -307,14 +315,6 @@
               <button id="clear" class="nepg-admin-button">Clear Token</button>
             </div>
             <div id="gs" class="nepg-admin-status">Not tested.</div>
-          </details>
-          <details class="nepg-admin-section">
-            <summary>Git Backup</summary>
-            <div class="nepg-admin-actions">
-              <button id="backup" class="nepg-admin-button">Backup to GitHub</button>
-              <button id="restore" class="nepg-admin-button">Restore from GitHub</button>
-            </div>
-            <div id="bs" class="nepg-admin-status">Ready.</div>
           </details>
           <details class="nepg-admin-section">
             <summary>Local Safety Hatch</summary>
@@ -349,7 +349,8 @@
       sections.forEach((sec) => sec.addEventListener("toggle", () => {
         if (sec.open) sections.forEach((other) => { if (other !== sec) other.open = false; });
       }));
-      if (auth || !start.token) sections[0].open = true;
+      // sections[0] = Git Backup, sections[1] = GitHub Settings. Show Settings when sign-in is needed.
+      sections[auth || !start.token ? 1 : 0].open = true;
 
       let done = false;
       const onKey = (ev) => { if (ev.key === "Escape") close(); };
